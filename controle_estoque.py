@@ -68,19 +68,40 @@ def cadastrar_produtos(estoque):
     print(f'\n>> PRODUTO ({produto["Descrição"].upper()}) CADASTRADO COM SUCESSO!')
 
 
+def listar_produtos(estoque):
+    if not estoque:
+        print('>> ESTOQUE VAZIO.')
+        return
+    
+    print(f"{'Descrição'.ljust(25)}{'Código'.rjust(17)}{'Quantidade'.rjust(19)}{'Custo do produto'.rjust(24)}{'Preço de venda'.rjust(22)}")
+    print('-' * 130)
+
+    for n, produto in enumerate(estoque):
+        descricao = produto['Descrição']
+        codigo = produto['Código']
+        qtd_estoque = produto['Qtd_estoque']
+        custo_produto = produto['Custo_produto']
+        preco_venda = produto['Preço_venda']
+    
+        print(descricao.ljust(30), str(codigo).rjust(10), str(qtd_estoque).rjust(15), f"R${custo_produto:,.2f}".rjust(23), f"R${preco_venda:,.2f}".rjust(23))
+
+
 def menu():
     while True:
         print('_' * 130)
         print('\n==================== MENU ====================')
         print('[1] - Cadastrar produto')
+        print('[2] - Listar produtos')
         print('[0] - Sair do programa\n')
 
-        opcao = input('ESCOLHA UMA OPÇÃO: ')
+        opcao = validar_int('ESCOLHA UMA OPÇÃO: ')
         print('_' * 130)
         
-        if opcao == '1':
+        if opcao == 1:
             cadastrar_produtos(estoque)
-        elif opcao == '0':
+        elif opcao == 2:
+            listar_produtos(estoque)
+        elif opcao == 0:
             print('>> Programa encerrado.')
             break
         else:
