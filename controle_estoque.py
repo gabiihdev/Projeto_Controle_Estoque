@@ -1,3 +1,6 @@
+import locale
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
 def processar_string(estoque_inicial):
     produtos = []
     produtos_separados = estoque_inicial.split('#')
@@ -80,10 +83,10 @@ def listar_produtos(estoque):
         descricao = produto['Descrição']
         codigo = produto['Código']
         qtd_estoque = produto['Qtd_estoque']
-        custo_produto = produto['Custo_produto']
-        preco_venda = produto['Preço_venda']
+        custo_produto = locale.currency(produto['Custo_produto'], grouping=True)
+        preco_venda = locale.currency(produto['Preço_venda'], grouping=True)
     
-        print(descricao.ljust(30), str(codigo).rjust(10), str(qtd_estoque).rjust(15), f"R${custo_produto:,.2f}".rjust(23), f"R${preco_venda:,.2f}".rjust(23))
+        print(descricao.ljust(30), str(codigo).rjust(10), str(qtd_estoque).rjust(15), custo_produto.rjust(23), preco_venda.rjust(23))
 
 
 def menu():
