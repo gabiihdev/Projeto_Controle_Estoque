@@ -89,22 +89,48 @@ def listar_produtos(estoque):
         print(descricao.ljust(30), str(codigo).rjust(10), str(qtd_estoque).rjust(15), custo_produto.rjust(23), preco_venda.rjust(23))
 
 
+def ordenar_produtos_por_qtd(estoque):
+    if not estoque:
+        print('>> ESTOQUE VAZIO.')
+        return
+        
+    ordem = input('Deseja ordenar os produtos em ordem crescente ou decrescente: ').lower()
+
+    if ordem == 'crescente':
+        produtos_ordenados = sorted(estoque, key=lambda x: x['Qtd_estoque'])
+        print(f"\n{'PRODUTOS ORDENADOS EM ORDEM CRESCENTE'.rjust(75)}\n")
+        print('-' * 130)
+        listar_produtos(produtos_ordenados)
+        
+    elif ordem == 'decrescente':
+        produtos_ordenados = sorted(estoque, key=lambda x: x['Qtd_estoque'], reverse=True)
+        print(f"\n{'PRODUTOS ORDENADOS EM ORDEM DECRESCENTE'.rjust(75)}\n")
+        print('-' * 130)
+        listar_produtos(produtos_ordenados)
+        
+    else:
+        print('>> ORDEM INVÁLIDA. ESCOLHA ENTRE "CRESCENTE" OU "DESCRESCENTE".')
+
+
 def menu():
     while True:
         print('_' * 130)
         print('\n==================== MENU ====================')
         print('[1] - Cadastrar produto')
         print('[2] - Listar produtos')
+        print('[3] - Ordenar produtos por quantidade')
         print('[0] - Sair do programa\n')
 
-        opcao = validar_int('ESCOLHA UMA OPÇÃO: ')
+        opcao = input('ESCOLHA UMA OPÇÃO: ')
         print('_' * 130)
         
-        if opcao == 1:
+        if opcao == '1':
             cadastrar_produtos(estoque)
-        elif opcao == 2:
+        elif opcao == '2':
             listar_produtos(estoque)
-        elif opcao == 0:
+        elif opcao == '3':
+            ordenar_produtos_por_qtd(estoque)
+        elif opcao == '0':
             print('>> Programa encerrado.')
             break
         else:
