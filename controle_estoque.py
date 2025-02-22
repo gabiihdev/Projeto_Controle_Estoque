@@ -140,6 +140,22 @@ def buscar_produto(estoque):
         print('>> PRODUTO NÃO ENCONTRADO.')
 
 
+def remover_produto(estoque):
+    if not estoque:
+        print('>> ESTOQUE VAZIO.')
+        return
+    
+    codigo = validar_int('Digite o código do produto que deseja remover: ')
+    
+    for produto in estoque:
+        if codigo == produto['Código']:
+            estoque.remove(produto)
+            print(f">> PRODUTO COM CÓDIGO {codigo} ({produto['Descrição']}) REMOVIDO COM SUCESSO!")
+            return
+            
+    print('>> PRODUTO NÃO ENCONTRADO.')
+
+
 def menu():
     while True:
         print('_' * 130)
@@ -148,6 +164,7 @@ def menu():
         print('[2] - Listar produtos')
         print('[3] - Ordenar produtos por quantidade')
         print('[4] - Buscar produto')
+        print('[5] - Remover produto')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -161,6 +178,8 @@ def menu():
             ordenar_produtos_por_qtd(estoque)
         elif opcao == '4':
             buscar_produto(estoque)
+        elif opcao == '5':
+            remover_produto(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
