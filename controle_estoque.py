@@ -156,6 +156,24 @@ def remover_produto(estoque):
     print('>> PRODUTO NÃO ENCONTRADO.')
 
 
+def consultar_produtos_esgotados(estoque):
+    if not estoque:
+        print('>> ESTOQUE VAZIO')
+        return
+    
+    produtos_esgotados = []
+    
+    for produto in estoque:
+        if produto['Qtd_estoque'] == 0:
+            produtos_esgotados.append(produto)
+        
+    if produtos_esgotados:
+        print(f"{'PRODUTOS ESGOTADOS'.rjust(75)}\n")
+        listar_produtos(produtos_esgotados)
+    else:
+        print('>> NENHUM PRODUTO ESGOTADO.')
+
+
 def menu():
     while True:
         print('_' * 130)
@@ -165,6 +183,7 @@ def menu():
         print('[3] - Ordenar produtos por quantidade')
         print('[4] - Buscar produto')
         print('[5] - Remover produto')
+        print('[6] - Consultar produtos esgotados')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -180,6 +199,8 @@ def menu():
             buscar_produto(estoque)
         elif opcao == '5':
             remover_produto(estoque)
+        elif opcao == '6':
+            consultar_produtos_esgotados(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
