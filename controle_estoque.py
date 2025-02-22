@@ -112,6 +112,34 @@ def ordenar_produtos_por_qtd(estoque):
         print('>> ORDEM INVÁLIDA. ESCOLHA ENTRE "CRESCENTE" OU "DESCRESCENTE".')
 
 
+def buscar_produto(estoque):
+    if not estoque:
+        print('>> ESTOQUE VAZIO.')
+        return
+    
+    item = input('Digite a descrição ou o código do produto que deseja buscar: ')
+    produtos_encontrados = []
+
+    try:
+        codigo_int = int(item)
+
+        for produto in estoque:
+            if codigo_int == produto['Código']:
+                produtos_encontrados.append(produto)
+
+    except ValueError:
+        for produto in estoque:
+            if item.lower() in produto['Descrição'].lower():
+                produtos_encontrados.append(produto)
+                
+    if produtos_encontrados:
+        print(f"\n{'PRODUTOS ENCONTRADOS'.rjust(75)}\n")
+        print('-' * 130)
+        listar_produtos(produtos_encontrados)
+    else:
+        print('>> PRODUTO NÃO ENCONTRADO.')
+
+
 def menu():
     while True:
         print('_' * 130)
@@ -119,6 +147,7 @@ def menu():
         print('[1] - Cadastrar produto')
         print('[2] - Listar produtos')
         print('[3] - Ordenar produtos por quantidade')
+        print('[4] - Buscar produto')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -130,6 +159,8 @@ def menu():
             listar_produtos(estoque)
         elif opcao == '3':
             ordenar_produtos_por_qtd(estoque)
+        elif opcao == '4':
+            buscar_produto(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
