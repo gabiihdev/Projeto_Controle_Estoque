@@ -174,6 +174,29 @@ def consultar_produtos_esgotados(estoque):
         print('>> NENHUM PRODUTO ESGOTADO.')
 
 
+def filtrar_produtos_baixa_qtd(estoque, quantidade_padrao = 5):
+    try:
+        quantidade_max = input('Digite a quantidade limite dos produtos que deseja filtrar (padrão = 5): ')
+        
+        if quantidade_max:
+            quantidade = int(quantidade_max)
+        else:
+            quantidade = quantidade_padrao
+            
+        produtos_baixa_qtd = list(filter(lambda produto: produto['Qtd_estoque'] <= quantidade, estoque))
+        
+        if produtos_baixa_qtd:
+            print(f"\n{'PRODUTOS COM QUANTIDADE MENOR OU IGUAL A ' + str(quantidade):^115}\n")
+            print('-' * 130)
+            listar_produtos(produtos_baixa_qtd)
+        else:
+            print(f'>> NENHUM PRODUTO COM QUANTIDADE MENOR OU IGUAL A {quantidade}.')
+        
+    except ValueError:
+        print('>> ERRO: DIGITE UM NÚMERO INTEIRO.')
+        return
+        
+
 def menu():
     while True:
         print('_' * 130)
@@ -184,6 +207,7 @@ def menu():
         print('[4] - Buscar produto')
         print('[5] - Remover produto')
         print('[6] - Consultar produtos esgotados')
+        print('[7] - Filtrar produtos com baixa quantidade')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -201,6 +225,8 @@ def menu():
             remover_produto(estoque)
         elif opcao == '6':
             consultar_produtos_esgotados(estoque)
+        elif opcao == '7':
+            filtrar_produtos_baixa_qtd(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
