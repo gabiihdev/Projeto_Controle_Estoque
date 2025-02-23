@@ -277,6 +277,48 @@ def calcular_lucro_presumido(estoque):
     lucro_total_formatado = locale.currency(lucro_total, grouping=True)   
     print(f"\n{'LUCRO TOTAL PRESUMIDO DO ESTOQUE'.ljust(40)} {lucro_total_formatado}")
     
+    
+def gerar_relatorio_geral(estoque):
+    if not estoque:
+        print('>> ESTOQUE VAZIO.')
+        return
+    
+    print(f"\n{'RELATÓRIO GERAL DO ESTOQUE'.rjust(75)}\n")
+    print('-' * 130)
+    print(f"{'Descrição'.ljust(25)}{'Código'.rjust(17)}{'Quantidade'.rjust(19)}{'Custo do produto'.rjust(24)}{'Preço de venda'.rjust(22)}{'Valor total'.rjust(22)}")
+    print('-' * 130)
+
+    custo_total = 0
+    faturamento_total = 0
+
+    for produto in estoque:
+        descricao = produto['Descrição']
+        codigo = produto['Código']
+        qtd_estoque = produto['Qtd_estoque']
+        custo_produto = produto['Custo_produto']
+        preco_venda = produto['Preço_venda']
+        total_produto =  qtd_estoque * preco_venda
+        custo_total += qtd_estoque * custo_produto
+        faturamento_total += total_produto
+        lucro_total_bruto = faturamento_total - custo_total
+
+        
+        custo_produto_formatado = locale.currency(custo_produto, grouping=True)
+        preco_venda_formatado = locale.currency(preco_venda, grouping=True)
+        total_produto_formatado = locale.currency(total_produto, grouping=True)
+        
+        print(descricao.ljust(30), str(codigo).rjust(10), str(qtd_estoque).rjust(15), custo_produto_formatado.rjust(23), preco_venda_formatado.rjust(23), total_produto_formatado.rjust(23))
+    
+    print('-' * 130)
+    
+    custo_total_formatado = locale.currency(custo_total, grouping=True)
+    faturamento_total_formatado = locale.currency(faturamento_total, grouping=True)
+    lucro_total_bruto_formatado = locale.currency(lucro_total_bruto, grouping=True)
+
+    print(f"\n{'CUSTO TOTAL:'.ljust(115)} {custo_total_formatado}")
+    print(f"{'FATURAMENTO TOTAL:'.ljust(115)} {faturamento_total_formatado}")
+    print(f"{'LUCRO TOTAL BRUTO:'.ljust(115)} {lucro_total_bruto_formatado}")
+    
 
 def menu():
     while True:
@@ -293,6 +335,7 @@ def menu():
         print('[9] - Atualizar preço do produto')
         print('[10] - Consultar valor total do estoque')
         print('[11] - Consultar lucro presumido do estoque')
+        print('[12] - Gerar relatório geral do estoque')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -320,6 +363,8 @@ def menu():
             calcular_total_estoque(estoque)
         elif opcao == '11':
             calcular_lucro_presumido(estoque)
+        elif opcao == '12':
+            gerar_relatorio_geral(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
