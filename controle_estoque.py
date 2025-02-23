@@ -245,6 +245,23 @@ def atualizar_preco(estoque):
     print('>> PRODUTO NÃO ENCONTRADO.')
 
 
+def calcular_total_estoque(estoque):
+    total = 0
+
+    print(f"\n{'Produto'.ljust(38)} {'Total em estoque'.rjust(10)}")
+    print('-' * 60)
+    
+    for produto in estoque:
+        total_produto = produto['Qtd_estoque'] * produto['Preço_venda']
+        total_produto_formatado = locale.currency(total_produto, grouping=True)
+
+        print(f"{produto['Descrição'].ljust(40)} {total_produto_formatado}".rjust(20))
+        total += total_produto
+        
+    total_formatado = locale.currency(total, grouping=True)
+    print(f"\n{'VALOR TOTAL DO ESTOQUE'.ljust(40)} {total_formatado}")
+
+
 def menu():
     while True:
         print('_' * 130)
@@ -258,6 +275,7 @@ def menu():
         print('[7] - Filtrar produtos com baixa quantidade')
         print('[8] - Atualizar quantidade do produto')
         print('[9] - Atualizar preço do produto')
+        print('[10] - Consultar valor total do estoque')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -281,6 +299,8 @@ def menu():
             atualizar_quantidade(estoque)
         elif opcao == '9':
             atualizar_preco(estoque)
+        elif opcao == '10':
+            calcular_total_estoque(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
