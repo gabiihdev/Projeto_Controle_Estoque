@@ -262,6 +262,22 @@ def calcular_total_estoque(estoque):
     print(f"\n{'VALOR TOTAL DO ESTOQUE'.ljust(40)} {total_formatado}")
 
 
+def calcular_lucro_presumido(estoque):
+    lucro_total = 0 
+    print(f"\n{'Produto'.ljust(38)} {'Lucro Presumido'.rjust(10)}")
+    print('-' * 60)   
+    
+    for produto in estoque:
+        lucro_produto = (produto['Preço_venda'] - produto['Custo_produto']) * produto['Qtd_estoque']
+        lucro_produto_formatado = locale.currency(lucro_produto, grouping=True)
+        
+        print(f"{produto['Descrição'].ljust(40)} {lucro_produto_formatado}".rjust(20))
+        lucro_total += lucro_produto
+ 
+    lucro_total_formatado = locale.currency(lucro_total, grouping=True)   
+    print(f"\n{'LUCRO TOTAL PRESUMIDO DO ESTOQUE'.ljust(40)} {lucro_total_formatado}")
+    
+
 def menu():
     while True:
         print('_' * 130)
@@ -276,6 +292,7 @@ def menu():
         print('[8] - Atualizar quantidade do produto')
         print('[9] - Atualizar preço do produto')
         print('[10] - Consultar valor total do estoque')
+        print('[11] - Consultar lucro presumido do estoque')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -301,6 +318,8 @@ def menu():
             atualizar_preco(estoque)
         elif opcao == '10':
             calcular_total_estoque(estoque)
+        elif opcao == '11':
+            calcular_lucro_presumido(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
