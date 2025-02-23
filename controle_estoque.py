@@ -1,6 +1,7 @@
 import locale
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
+
 def processar_string(estoque_inicial):
     produtos = []
     produtos_separados = estoque_inicial.split('#')
@@ -22,11 +23,11 @@ def processar_string(estoque_inicial):
 def validar_int(num):
     while True:
         valor = input(num)
-        
+
         try:
             valor_int = int(valor)
             return valor_int
-        
+
         except ValueError:
             print('>> ERRO: DIGITE UM NÚMERO INTEIRO.\n')
 
@@ -34,11 +35,11 @@ def validar_int(num):
 def validar_float(num):
     while True:
         valor = input(num)
-        
+
         try:
             valor_float = float(valor)
             return valor_float
-        
+
         except ValueError:
             print('>> ERRO: DIGITE UM NÚMERO VÁLIDO.\n')
 
@@ -46,13 +47,15 @@ def validar_float(num):
 def cadastrar_produtos(estoque):
     descricao = input('Digite a descrição do produto: ').strip()
     if any(produto['Descrição'].lower() == descricao.lower() for produto in estoque):
-       print(f'\n>> ERRO: O PRODUTO "{descricao.upper()}" JÁ ESTÁ CADASTRADO NO ESTOQUE.')
-       return
-    
+        print(
+            f'\n>> ERRO: O PRODUTO "{descricao.upper()}" JÁ ESTÁ CADASTRADO NO ESTOQUE.')
+        return
+
     codigo = validar_int('Digite o código: ')
     for produto in estoque:
         if codigo == produto['Código']:
-            print(f'\n>> ERRO: EXISTE UM PRODUTO COM O CÓDIGO {codigo} NO ESTOQUE.')
+            print(
+                f'\n>> ERRO: EXISTE UM PRODUTO COM O CÓDIGO {codigo} NO ESTOQUE.')
             return
 
     qtd_estoque = validar_int('Digite a quantidade do produto em estoque: ')
@@ -68,14 +71,15 @@ def cadastrar_produtos(estoque):
     }
 
     estoque.append(produto)
-    print(f'\n>> PRODUTO ({produto["Descrição"].upper()}) CADASTRADO COM SUCESSO!')
+    print(
+        f'\n>> PRODUTO ({produto["Descrição"].upper()}) CADASTRADO COM SUCESSO!')
 
 
 def listar_produtos(estoque):
     if not estoque:
         print('>> ESTOQUE VAZIO.')
         return
-    
+
     print(f"{'Descrição'.ljust(25)}{'Código'.rjust(17)}{'Quantidade'.rjust(19)}{'Custo do produto'.rjust(24)}{'Preço de venda'.rjust(22)}")
     print('-' * 130)
 
@@ -83,31 +87,35 @@ def listar_produtos(estoque):
         descricao = produto['Descrição']
         codigo = produto['Código']
         qtd_estoque = produto['Qtd_estoque']
-        custo_produto = locale.currency(produto['Custo_produto'], grouping=True)
+        custo_produto = locale.currency(
+            produto['Custo_produto'], grouping=True)
         preco_venda = locale.currency(produto['Preço_venda'], grouping=True)
-    
-        print(descricao.ljust(30), str(codigo).rjust(10), str(qtd_estoque).rjust(15), custo_produto.rjust(23), preco_venda.rjust(23))
+
+        print(descricao.ljust(30), str(codigo).rjust(10), str(qtd_estoque).rjust(
+            15), custo_produto.rjust(23), preco_venda.rjust(23))
 
 
 def ordenar_produtos_por_qtd(estoque):
     if not estoque:
         print('>> ESTOQUE VAZIO.')
         return
-        
-    ordem = input('Deseja ordenar os produtos em ordem crescente ou decrescente: ').lower()
+
+    ordem = input(
+        'Deseja ordenar os produtos em ordem crescente ou decrescente: ').lower()
 
     if ordem == 'crescente':
         produtos_ordenados = sorted(estoque, key=lambda x: x['Qtd_estoque'])
         print(f"\n{'PRODUTOS ORDENADOS EM ORDEM CRESCENTE'.rjust(75)}\n")
         print('-' * 130)
         listar_produtos(produtos_ordenados)
-        
+
     elif ordem == 'decrescente':
-        produtos_ordenados = sorted(estoque, key=lambda x: x['Qtd_estoque'], reverse=True)
+        produtos_ordenados = sorted(
+            estoque, key=lambda x: x['Qtd_estoque'], reverse=True)
         print(f"\n{'PRODUTOS ORDENADOS EM ORDEM DECRESCENTE'.rjust(75)}\n")
         print('-' * 130)
         listar_produtos(produtos_ordenados)
-        
+
     else:
         print('>> ORDEM INVÁLIDA. ESCOLHA ENTRE "CRESCENTE" OU "DESCRESCENTE".')
 
@@ -116,8 +124,9 @@ def buscar_produto(estoque):
     if not estoque:
         print('>> ESTOQUE VAZIO.')
         return
-    
-    item = input('Digite a descrição ou o código do produto que deseja buscar: ')
+
+    item = input(
+        'Digite a descrição ou o código do produto que deseja buscar: ')
     produtos_encontrados = []
 
     try:
@@ -131,7 +140,7 @@ def buscar_produto(estoque):
         for produto in estoque:
             if item.lower() in produto['Descrição'].lower():
                 produtos_encontrados.append(produto)
-                
+
     if produtos_encontrados:
         print(f"\n{'PRODUTOS ENCONTRADOS'.rjust(75)}\n")
         print('-' * 130)
@@ -144,15 +153,16 @@ def remover_produto(estoque):
     if not estoque:
         print('>> ESTOQUE VAZIO.')
         return
-    
+
     codigo = validar_int('Digite o código do produto que deseja remover: ')
-    
+
     for produto in estoque:
         if codigo == produto['Código']:
             estoque.remove(produto)
-            print(f">> PRODUTO COM CÓDIGO {codigo} ({produto['Descrição']}) REMOVIDO COM SUCESSO!")
+            print(
+                f">> PRODUTO COM CÓDIGO {codigo} ({produto['Descrição']}) REMOVIDO COM SUCESSO!")
             return
-            
+
     print('>> PRODUTO NÃO ENCONTRADO.')
 
 
@@ -160,13 +170,13 @@ def consultar_produtos_esgotados(estoque):
     if not estoque:
         print('>> ESTOQUE VAZIO')
         return
-    
+
     produtos_esgotados = []
-    
+
     for produto in estoque:
         if produto['Qtd_estoque'] == 0:
             produtos_esgotados.append(produto)
-        
+
     if produtos_esgotados:
         print(f"{'PRODUTOS ESGOTADOS'.rjust(75)}\n")
         listar_produtos(produtos_esgotados)
@@ -174,28 +184,58 @@ def consultar_produtos_esgotados(estoque):
         print('>> NENHUM PRODUTO ESGOTADO.')
 
 
-def filtrar_produtos_baixa_qtd(estoque, quantidade_padrao = 5):
+def filtrar_produtos_baixa_qtd(estoque, quantidade_padrao=5):
     try:
         quantidade_max = input('Digite a quantidade limite dos produtos que deseja filtrar (padrão = 5): ')
-        
+
         if quantidade_max:
             quantidade = int(quantidade_max)
         else:
             quantidade = quantidade_padrao
-            
+
         produtos_baixa_qtd = list(filter(lambda produto: produto['Qtd_estoque'] <= quantidade, estoque))
-        
+
         if produtos_baixa_qtd:
             print(f"\n{'PRODUTOS COM QUANTIDADE MENOR OU IGUAL A ' + str(quantidade):^115}\n")
             print('-' * 130)
             listar_produtos(produtos_baixa_qtd)
         else:
             print(f'>> NENHUM PRODUTO COM QUANTIDADE MENOR OU IGUAL A {quantidade}.')
-        
+
     except ValueError:
         print('>> ERRO: DIGITE UM NÚMERO INTEIRO.')
         return
-        
+
+
+def atualizar_quantidade(estoque):
+    codigo = validar_int('Digite o código do produto que deseja atualizar a quantidade: ')
+
+    for produto in estoque:
+        if codigo == produto['Código']:
+            while True:
+                opcao = input('Digite [1] para entrada(aumento) ou [2] para saída(redução): ')
+
+                if opcao not in ('1', '2'):
+                    print('\n>> OPÇÃO INVÁLIDA. DIGITE 1 OU 2.')
+                    continue
+
+                while True:
+                    quantidade = validar_int('Digite a quantidade: ')
+
+                    if quantidade <= 0:
+                        print("\n>> ERRO: A QUANTIDADE DEVE SER MAIOR QUE 0.")
+                        continue
+
+                    if opcao == '2' and quantidade > produto['Qtd_estoque']:
+                        print("\n>> ERRO: A SAÍDA É MAIOR DO QUE O ESTOQUE DISPONÍVEL.")
+                        continue
+
+                    produto['Qtd_estoque'] += quantidade if opcao == '1' else -quantidade
+                    print(f"\n>> A QUANTIDADE EM ESTOQUE DO PRODUTO ({produto['Descrição']}) FOI ATUALIZADA PARA {produto['Qtd_estoque']}.")
+                    return
+
+    print('>> PRODUTO NÃO ENCONTRADO.')
+
 
 def menu():
     while True:
@@ -208,11 +248,12 @@ def menu():
         print('[5] - Remover produto')
         print('[6] - Consultar produtos esgotados')
         print('[7] - Filtrar produtos com baixa quantidade')
+        print('[8] - Atualizar quantidade do produto')
         print('[0] - Sair do programa\n')
 
         opcao = input('ESCOLHA UMA OPÇÃO: ')
         print('_' * 130)
-        
+
         if opcao == '1':
             cadastrar_produtos(estoque)
         elif opcao == '2':
@@ -227,6 +268,8 @@ def menu():
             consultar_produtos_esgotados(estoque)
         elif opcao == '7':
             filtrar_produtos_baixa_qtd(estoque)
+        elif opcao == '8':
+            atualizar_quantidade(estoque)
         elif opcao == '0':
             print('>> Programa encerrado.')
             break
