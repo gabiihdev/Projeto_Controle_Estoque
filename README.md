@@ -228,3 +228,7 @@ Caso o produto não seja encontrado, a seguinte mensagem será exibida:
 -> Finaliza a execução do sistema.
 
 ![Encerrar programa](screenshots/encerrar.png)
+
+## Contribuições
+
+Sinta-se à vontade para contribuir com melhorias para este projeto.
